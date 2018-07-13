@@ -38,7 +38,7 @@ class NewsModel
 	
 	public static function findNewItems($count = 0) {
 		$order = Array();
-		$order['datetime'] = 'DESC';
+		$order['time_add'] = 'DESC';
 		$items = static::findLimitedAndOrderedByColumn($order, 0, $count);
 		return $items;		
 	}
@@ -81,9 +81,9 @@ class NewsModel
 		$this->text = preg_replace($paterns, $replacements, $this->text);
 	}
 	
-	public function convertZaglFromBase()
+	public function convertTitleFromBase()
 	{ # Конвертируем поле 'zagl' при получении из базы
-		$this->convertSymbolsFromBase('zagl');
+		$this->convertSymbolsFromBase('title');
 	}
 	
 	private function getShortText($textLong, $length){
@@ -102,8 +102,8 @@ class NewsModel
 	{
 		$this->convertToUtf8();
 		$this->convertTextFromBase();
-		$this->convertZaglFromBase();
-		$this->title = strip_tags($this->zagl);
+		$this->convertTitleFromBase();
+		$this->title = strip_tags($this->title);
 		$this->short_title = $this->getShortText($this->title, 75);
 		$this->short_text = $this->getShortText($this->text, 200);
 	}	

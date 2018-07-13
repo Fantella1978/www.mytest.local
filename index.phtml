@@ -5,7 +5,7 @@ require_once __DIR__ . '/libs/autoloader.php';
 
 
 $ctrl = (isset($_GET['ctrl']) AND !empty($_GET['ctrl'])) ? $_GET['ctrl'] : 'News';
-$act = (isset($_GET['act']) AND !empty($_GET['act'])) ? $_GET['act'] : 'UpdateStep_2';
+$act = (isset($_GET['act']) AND !empty($_GET['act'])) ? $_GET['act'] : 'IndexNewsPage';
 
 $controllerClassName = $ctrl . 'Controller';
 $method = 'action' . $act;
