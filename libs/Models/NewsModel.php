@@ -40,7 +40,13 @@ class NewsModel
 		$order = Array();
 		$order['time_add'] = 'DESC';
 		$items = static::findLimitedAndOrderedByColumn($order, 0, $count);
-		return $items;		
+		return $items;
+	}
+
+	public static function countIdChecked() {
+		
+		$items = static::findLimitedAndOrderedByColumn($order, 0, $count);
+		return $items;
 	}
 
 	public function convertToUtf8()

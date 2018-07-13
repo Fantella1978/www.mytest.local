@@ -1,17 +1,25 @@
 <?php
 
 class NewsController{
+
+	private $colNewsOnOnePage = 30;
 	
 	public function actionIndexNewsPage()
 	{ # Формируем заглавную страницу новостей, последние 10 новостей
-		$items = NewsModel::findNewItems(30);		
+		
+		$countAllCheckedNews = NewsModel::countByColumnValue('checked', 1);
+		#var_dump($countAllCheckedNews);
+		#die;
+		$items = NewsModel::findNewItems($this->colNewsOnOnePage);
 		foreach ($items as $k => $item) {
 			$items[$k] = $this->prepareNewsItemDataToView($item);
 		}
 		$view = new View();
 		$view->items = $items;
 		$view->displayItemsInFullWidthContent('news/one_news_on_index.php');
-		$this->archiveButton();
+		if ($countAllCheckedNews > $this->colNewsOnOnePage) {
+			$this->archiveButton();
+		}
 		return true;
 	}
 
@@ -115,6 +123,7 @@ class NewsController{
 		} else {
 			$item->img_on_title_url = '/img/noimg2.jpg';
 		}
+		$item->url = '/computer-news/article_' . $item->id . '.html';
 		return $item;
 	}	
 

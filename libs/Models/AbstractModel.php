@@ -28,7 +28,7 @@ abstract class AbstractModel
 		$class = get_called_class();
 		$db->setClassName($class);
 		$sql = 'SELECT * FROM ' . static::$table;
-		return $db->query($sql);
+		return $db->queryToClass($sql);
 	}
 	
 	public static function findLimitedAndOrderedByColumn($columns, $offset = 0, $count = 0) {
@@ -48,7 +48,7 @@ abstract class AbstractModel
 			$sql .= ' LIMIT ' . ((!empty($offset)) ? $offset . ', ': '') .  ((!empty($count)) ? $count : '');
 		}
 		$sql .= ';';
-		$res = $db->query($sql);
+		$res = $db->queryToClass($sql);
 		if (empty($res)) {
 			throw new ModelException('Не найдено записей в таблице "' . static::$table . '".');
 		}		
@@ -67,21 +67,46 @@ abstract class AbstractModel
 		$class = get_called_class();
 		$db->setClassName($class);
 		$sql = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
-		$res = $db->query($sql, Array(':id' => $id));
+		$res = $db->queryToClass($sql, Array(':id' => $id));
 		if (empty($res)) {
 			throw new ModelException('Не найдено значение "id" = "' . $id . '" в таблице "' . static::$table . '".');
 		}
 		return $res[0];
 	}
 
-	public static function findOneByColumn($column, $value)
+	public static function findOneByColumnValue($column, $value)
 	{
 		$db = new DB(); 
 		$db->setClassName(get_called_class());
 		$sql = 'SELECT * FROM ' . static::$table . ' WHERE ' . $column . ' = :value';
-		$res = $db->query($sql, Array(':value' => $value));
+		$res = $db->queryToClass($sql, Array(':value' => $value));
 		if (empty($res)) {
 			throw new ModelException('Не найдено значение "' . $value . '" в поле "' . $column . '" в таблице "' . static::$table . '".');
+		}
+		return $res[0];
+	}
+
+	public static function countByColumnValue($column, $value)
+	{
+		$db = new DB(); 
+		$db->setClassName(get_called_class());
+		$sql = 'SELECT count(id) FROM ' . static::$table . ' WHERE ' . $column . ' = :value';
+		$res = $db->queryToArray($sql, Array(':value' => $value));
+		if (empty($res)) {
+			throw new ModelException('Не найдено количество строк с полем "' . $column . '" равным "' . $value . '"в таблице "' . static::$table . '".');
+		}
+		return $res[0]['count(id)'];
+	}
+
+	public static function countId()
+	{
+		$db = new DB(); 
+		$db->setClassName(get_called_class());
+		
+		$sql = 'SELECT count(id) FROM ' . static::$table;
+		$res = $db->queryToClass($sql);
+		if (empty($res)) {
+			throw new ModelException('Не найдено записей в таблице "' . static::$table . '".');
 		}
 		return $res[0];
 	}
@@ -143,7 +168,7 @@ abstract class AbstractModel
 	{
 		$db = new DB();
 		$sql = 'DELETE ' . static::$table . ' WHERE id=:id';
-		return $db->query($sql, Array(':id' => $this->id));
+		return $db->queryToClass($sql, Array(':id' => $this->id));
 	}
 
 }

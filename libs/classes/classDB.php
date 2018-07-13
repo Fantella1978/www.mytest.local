@@ -16,11 +16,18 @@ class DB
 		
 	}
 	
-	public function query($sql, $params = Array())
+	public function queryToClass($sql, $params = Array())
 	{
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute($params);
 		return $sth->fetchAll(PDO::FETCH_CLASS, $this->className);
+	}
+
+	public function queryToArray($sql, $params = Array())
+	{
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute($params);
+		return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
 	public function execute($sql, $params = Array())
