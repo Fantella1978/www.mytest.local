@@ -94,6 +94,11 @@ class NewsController{
 		#include __DIR__.'/../views/news/all.php';
 		*/
 	}
+	public function actionUpdateStep_0()
+	{
+		echo time();
+		return true;
+	}
 	
 	public function actionOne()
 	{
@@ -112,4 +117,37 @@ class NewsController{
 		#die;
 		
 	}
+
+	public function actionUpdateStep_1()
+	{
+		try {
+			$items = NewsModel::findAll();
+			foreach ($items as $item) {
+				$item->time_add = date('Y-m-d H:i:s', $item->timeadd);
+				$item->save();
+				echo $item->id . ' - ' . $item->timeadd . ' - ' . $item->time_add . ' - OK ' . '<br>' . "\n";
+			}
+		} catch (ModelException $e) {
+			$view = new View();
+			$view->displayErrorAndDie(404, 'Ошибка: ' . $e->getMessage());			
+		}
+		die;
+	}
+	
+	public function actionUpdateStep_2()
+	{
+		try {
+			$items = NewsModel::findAll();
+			foreach ($items as $item) {
+				$item->time_publish = $item->time_add;
+				$item->save();
+				echo $item->id . ' - ' . $item->time_add . ' - ' . $item->time_publish . ' - OK ' . '<br>' . "\n";
+			}
+		} catch (ModelException $e) {
+			$view = new View();
+			$view->displayErrorAndDie(404, 'Ошибка: ' . $e->getMessage());			
+		}
+		die;
+	}
+	
 }
