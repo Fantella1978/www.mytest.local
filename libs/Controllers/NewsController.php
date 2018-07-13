@@ -6,13 +6,13 @@ class NewsController{
 	{ # Формируем заглавную страницу новостей
 		$items = NewsModel::findNewItems(10);		
 		foreach ($items as $item) {
-			$item->prepareToView();
+			$item = $this->prepareNewsItemDataToView($item);
 		}
 		$view = new View();
 		$view->items = $items;
 		$view->display('news/all.php');
 		
-		echo 'Последние 10 новостей.' . '<br>' . "\n";
+		# echo 'Последние 10 новостей.' . '<br>' . "\n";
 	}
 
 	public function actionAll()
@@ -94,6 +94,34 @@ class NewsController{
 		#include __DIR__.'/../views/news/all.php';
 		*/
 	}
+	private function prepareNewsItemDataToView($item)
+	{
+		$item->convertToUtf8();
+		$item->convertTextFromBase();
+		$item->convertTitleFromBase();
+		$item->title = strip_tags($item->title);
+		$item->short_title = $this->getShortText($item->title, 75);
+		$item->short_text = $this->getShortText($item->text, 200);
+		if ($item->img_on_title) {
+			$item->img_on_title_url = '/img/news/' . $item->id . '/imgnewstitle.jpg';
+		} else {
+			$item->img_on_title_url = '/img/noimg2.jpg';
+		}
+		return $item;
+	}	
+
+	private function getShortText($textLong, $length){
+		$text = strip_tags($textLong);
+		if (mb_strlen($text, 'UTF-8') > $length) {
+			$pos = mb_strpos($text, ' ', $length, 'UTF-8');
+			if ($pos !== false) {
+				$text = mb_substr($text, 0, $pos, 'UTF-8');
+				return $text . '...';
+			}
+		}
+		return $text;
+	}
+
 	public function actionUpdateStep_0()
 	{
 		echo time();

@@ -86,25 +86,5 @@ class NewsModel
 		$this->convertSymbolsFromBase('title');
 	}
 	
-	private function getShortText($textLong, $length){
-		$text = strip_tags($textLong);
-		if (mb_strlen($text, 'UTF-8') > $length) {
-			$pos = mb_strpos($text, ' ', $length, 'UTF-8');
-			if ($pos !== false) {
-				$text = mb_substr($text, 0, $pos, 'UTF-8');
-				return $text . '...';
-			}
-		}
-		return $text;
-	}
 
-	public function prepareToView()
-	{
-		$this->convertToUtf8();
-		$this->convertTextFromBase();
-		$this->convertTitleFromBase();
-		$this->title = strip_tags($this->title);
-		$this->short_title = $this->getShortText($this->title, 75);
-		$this->short_text = $this->getShortText($this->text, 200);
-	}	
 }
