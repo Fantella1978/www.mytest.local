@@ -3,19 +3,24 @@
 class NewsController{
 	
 	public function actionIndexNewsPage()
-	{ # Формируем заглавную страницу новостей
-		$items = NewsModel::findNewItems(10);		
-		foreach ($items as $item) {
-			$item = $this->prepareNewsItemDataToView($item);
+	{ # Формируем заглавную страницу новостей, последние 10 новостей
+		$items = NewsModel::findNewItems(30);		
+		foreach ($items as $k => $item) {
+			$items[$k] = $this->prepareNewsItemDataToView($item);
 		}
 		$view = new View();
-		foreach ($items as $item) {
-			$view->item = $item;
-			$view->display('news/one_news_on_index.php');
-		}
-		# echo 'Последние 10 новостей.' . '<br>' . "\n";
+		$view->items = $items;
+		$view->displayItemsInFullWidthContent('news/one_news_on_index.php');
+		$this->archiveButton();
+		return true;
 	}
 
+	private function archiveButton(){
+		$view = new View();
+		$view->displayNewsArchiveBtn();
+		return true;
+	}
+	
 	public function actionAll()
 	{
 
@@ -37,6 +42,8 @@ class NewsController{
 		die;
 		
 		/*
+		# 
+		#.' . '<br>' . "\n";
 		
 		try {
 			$item = NewsModel::findOneByColumn('zagl', 'Поздравляем всех женщин с праздником 8 марта');
