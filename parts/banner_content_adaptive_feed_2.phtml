@@ -1,0 +1,19 @@
+<div class="banner_content_adaptive my-3" id="bcaf2"><?php
+global $GlobalShowAds;
+if (!isset($GlobalShowAds) OR (!empty($GlobalShowAds) AND $GlobalShowAds)) {
+################################################?>
+<!-- Sector.biz.ua - Адаптивный Feed 2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-gz-27+2z-af+k8"
+     data-ad-client="ca-pub-7992327289662063"
+     data-ad-slot="5981557483"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<?php #############################################
+} else {
+	echo '<div class="cube_banner_content_adaptive h90 my-1"></div>';
+}
+?></div>

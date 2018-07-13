@@ -1,0 +1,33 @@
+<?php
+error_reporting (E_ALL); ini_set('display_errors', 1);
+
+require_once __DIR__ . '/libs/autoloader.php';
+
+
+$ctrl = (isset($_GET['ctrl']) AND !empty($_GET['ctrl'])) ? $_GET['ctrl'] : 'News';
+$act = (isset($_GET['act']) AND !empty($_GET['act'])) ? $_GET['act'] : 'IndexNewsPage';
+
+$controllerClassName = $ctrl . 'Controller';
+$method = 'action' . $act;
+
+ob_start();
+
+try {
+	$controller = new $controllerClassName;
+	$controller->$method();
+} catch (ModelException $e) {
+	$view = new View();
+	$view->displayErrorAndDie('Ошибка: ' . $e->getMessage());				
+}
+
+$content = ob_get_contents();
+ob_end_clean();
+
+
+include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'top.phtml');
+include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'content_begin.phtml');
+echo $content;
+include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'content_end.phtml');
+include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'bottom.phtml');
+
+die;

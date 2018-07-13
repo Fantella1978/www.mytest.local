@@ -1,0 +1,22 @@
+<?php
+error_reporting (E_ALL); ini_set('display_errors', 1);
+
+require_once __DIR__ . '/libs/autoloader.php';
+
+$ctrl = (isset($_GET['ctrl']) AND !empty($_GET['ctrl'])) ? $_GET['ctrl'] : 'Docs';
+$act = (isset($_GET['act']) AND !empty($_GET['act'])) ? $_GET['act'] : 'All';
+
+$controllerClassName = $ctrl . 'Controller';
+$method = 'action' . $act;
+
+try {
+	$controller = new $controllerClassName;
+	$controller->$method();
+} catch (ModelException $e) {
+	$view = new View();
+	$view->displayErrorAndDie('Ошибка: ' . $e->getMessage());
+}
+
+echo 'INDEX Docs END';
+
+die;

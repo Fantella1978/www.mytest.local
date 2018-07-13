@@ -1,0 +1,21 @@
+<!-- Footer -->
+<div id="footer" class="background-dark text-light py-5 py-lg-1">
+	<div class="container">
+		<div class="row align-items-end">
+			<!-- Copyright -->
+			<div id="copyright" class="col-md-6">
+				<span class="pull-left">&copy; 2017-<?php echo date("Y"); ?> Name</span>
+			</div>
+			<!-- END Copyright -->
+			<!-- Generate Time -->
+			<div id="generatetime" class="col-md-3 my-3 my-md-0">
+				<span class="pull-left" id="page_generate_time"></span>
+			</div>
+			<!-- END Generate Time -->
+		</div>
+	</div>
+	<?php
+		include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'js_bottom.phtml');
+	?>
+</div>
+<!-- END Footer -->
