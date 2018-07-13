@@ -9,9 +9,10 @@ class NewsController{
 			$item = $this->prepareNewsItemDataToView($item);
 		}
 		$view = new View();
-		$view->items = $items;
-		$view->display('news/all.php');
-		
+		foreach ($items as $item) {
+			$view->item = $item;
+			$view->display('news/one_news_on_index.php');
+		}
 		# echo 'Последние 10 новостей.' . '<br>' . "\n";
 	}
 
