@@ -52,6 +52,14 @@ class View
         echo $this->render($template);
     }
 
+    public function displayItems($template)
+    {
+		foreach ($this->items as $item) {
+			$this->item = $item;
+			echo $this->render($template);
+		}
+    }
+
     public function displayFullWidthContentBegin()
     {
 		include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'content_begin_full_width.phtml');
@@ -65,10 +73,7 @@ class View
     public function displayItemsInFullWidthContent($template)
     {
 		$this->displayFullWidthContentBegin();
-		foreach ($this->items as $item) {
-			$this->item = $item;
-			echo $this->render($template);
-		}
+		$this->displayItems($template);
 		$this->displayFullWidthContentEnd();
     }
 
@@ -91,17 +96,6 @@ class View
         echo $this->render('errors/error.php');
 		die;
     }
-
-	public function displayNewsArchiveBtn(){
-		$btn = new Btn();
-		$btn->tag = 'a';
-		$btn->href = '#';
-		$btn->class = 'btn btn-primary';
-		$btn->role = 'button';
-		$btn->text = 'Архив новостей';
-		$btn->display();
-		return true;
-	}
 	
     public function count()
     {

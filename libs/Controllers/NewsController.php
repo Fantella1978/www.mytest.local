@@ -14,18 +14,14 @@ class NewsController{
 		foreach ($items as $k => $item) {
 			$items[$k] = $this->prepareNewsItemDataToView($item);
 		}
-		$view = new View();
+		$view = new NewsView();
 		$view->items = $items;
 		$view->displayItemsInFullWidthContent('news/one_news_on_index.php');
 		if ($countAllCheckedNews > $this->colNewsOnOnePage) {
-			$this->archiveButton();
+			$view->displayArchiveBtn = true;
+			$view->displayAddNewsBtn = true;
+			$view->displayIndexButtons();
 		}
-		return true;
-	}
-
-	private function archiveButton(){
-		$view = new View();
-		$view->displayNewsArchiveBtn();
 		return true;
 	}
 	

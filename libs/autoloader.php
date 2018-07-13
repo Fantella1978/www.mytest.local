@@ -29,6 +29,13 @@ function loadFromClasses($aClassName) {
 			return true;
 		}
 	}
+	if (preg_match('/.*View$/', $aClassName, $m)) {
+		$aClassFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $aClassName . '.php';
+		if (file_exists($aClassFilePath)) {
+			require_once $aClassFilePath;
+			return true;
+		}
+	}
 	$aClassFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'class' . $aClassName . '.php';
 	if (file_exists($aClassFilePath)) {
 		require_once $aClassFilePath;

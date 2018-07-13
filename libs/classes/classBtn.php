@@ -9,7 +9,9 @@ class Btn
 	public $role = 'button';
 	public $text = '';
 	
-	public function display(){
+	public function render(){
+        ob_start();
+
 		echo '<';
 		switch ($this->tag) {
 			case 'a':
@@ -63,8 +65,16 @@ class Btn
 				echo 'button';
 		}		
 		echo '>';
-		return true;
+		
+        $content = ob_get_contents();
+        ob_end_clean();
+        return $content;
 	}
+
+	public function display(){
+		echo $this->render();
+	}
+	
 	
 }
 ?>

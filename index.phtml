@@ -10,7 +10,8 @@ $act = (isset($_GET['act']) AND !empty($_GET['act'])) ? $_GET['act'] : 'IndexNew
 $controllerClassName = $ctrl . 'Controller';
 $method = 'action' . $act;
 
-ob_start();
+$PageContent = new PageView();
+$PageContent->displayPageTop();
 
 try {
 	$controller = new $controllerClassName;
@@ -20,12 +21,8 @@ try {
 	$view->displayErrorAndDie('Ошибка: ' . $e->getMessage());				
 }
 
-$content = ob_get_contents();
-ob_end_clean();
-
-
-include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'top.phtml');
-echo $content;
-include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'parts' . DIRECTORY_SEPARATOR . 'bottom.phtml');
+$PageContent->pageAddContent();
+$PageContent->displayPageBottom();
+$PageContent->displayPage();
 
 die;
